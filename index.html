@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Sarahi ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-space: #05060b;
+      --card-bg: rgba(12, 15, 26, 0.85);
+      --gold-1: #dfba73;
+      --gold-2: #f7e2b0;
+      --gold-3: #9e7529;
+      --rose-pigment: #e07a93;
+      --indigo-glow: #6366f1;
+      --cyan-spark: #38bdf8;
+      --emerald: #34d399;
+      --text-main: #f8fafc;
+      --text-soft: #cbd5e1;
+      --text-muted: #64748b;
+      --font-display: 'Italiana', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-space);
+      font-family: var(--font-body);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      position: relative;
+      overflow-x: hidden;
+      perspective: 1000px;
+    }
+
+    #spaceCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .aurora-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .aurora-sphere {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.38;
+      animation: sphereDrift 24s infinite alternate ease-in-out;
+    }
+
+    .sphere-1 {
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, #312e81 0%, #1e1b4b 55%, transparent 75%);
+      top: -180px;
+      left: -150px;
+    }
+
+    .sphere-2 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, #831843 0%, #dfba73 45%, transparent 75%);
+      bottom: -200px;
+      right: -150px;
+      animation-delay: -9s;
+    }
+
+    .sphere-3 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #065f46 0%, #0e7490 50%, transparent 80%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.22;
+      animation-delay: -16s;
+    }
+
+    @keyframes sphereDrift {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate(60px, -40px) scale(1.15) rotate(10deg); }
+      100% { transform: translate(-40px, 60px) scale(0.92) rotate(-8deg); }
+    }
+
+    .fine-canvas-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(rgba(223, 186, 115, 0.09) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 32px 32px, 8px 8px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .letter-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(14, 18, 32, 0.94) 0%, rgba(5, 6, 11, 0.98) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s ease;
+    }
+
+    .letter-modal.vanished {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .envelope-3d-box {
+      position: relative;
+      width: 330px;
+      height: 220px;
+      cursor: pointer;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .envelope-3d-box:hover {
+      transform: translateY(-10px) rotateX(6deg) scale(1.03);
+    }
+
+    .envelope-glow-shadow {
+      position: absolute;
+      inset: -15px;
+      border-radius: 24px;
+      background: radial-gradient(circle, rgba(223, 186, 115, 0.25) 0%, transparent 70%);
+      filter: blur(25px);
+      transform: translateY(25px);
+    }
+
+    .envelope-hull {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, #1d2238 0%, #111422 100%);
+      border-radius: 18px;
+      border: 1.5px solid rgba(223, 186, 115, 0.4);
+      box-shadow: 0 30px 60px -15px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.1);
+      overflow: hidden;
+    }
+
+    .envelope-top-lid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 165px solid transparent;
+      border-right: 165px solid transparent;
+      border-top: 118px solid #262e4a;
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      z-index: 5;
+    }
+
+    .envelope-bottom-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 165px solid #141727;
+      border-right: 165px solid #141727;
+      border-bottom: 125px solid #1c2136;
+      z-index: 4;
+    }
+
+    .wax-seal-ornament {
+      position: absolute;
+      top: 82px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 62px;
+      height: 62px;
+      background: radial-gradient(circle at 35% 30%, #fff1d6 0%, #dfba73 35%, #ad7c2b 80%, #6e4911 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 10px 25px rgba(0,0,0,0.6),
+        0 0 25px rgba(223, 186, 115, 0.55),
+        inset 0 2px 4px rgba(255,255,255,0.7);
+      z-index: 6;
+      transition: transform 0.6s ease, opacity 0.5s ease;
+    }
+
+    .wax-seal-ornament span {
+      font-family: var(--font-display);
+      font-size: 24px;
+      color: #12141f;
+      font-weight: 700;
+    }
+
+    .envelope-3d-box.envelope-open .envelope-top-lid {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-3d-box.envelope-open .wax-seal-ornament {
+      transform: translateX(-50%) scale(0.4) rotate(45deg);
+      opacity: 0;
+    }
+
+    .envelope-prompt-text {
+      margin-top: 38px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: var(--gold-2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: promptGlow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes promptGlow {
+      0%, 100% { opacity: 0.45; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    .masterpiece-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 580px;
+      border-radius: 32px;
+      padding: 1.5px;
+      background: linear-gradient(140deg, rgba(223, 186, 115, 0.85) 0%, rgba(255, 255, 255, 0.2) 28%, rgba(224, 122, 147, 0.65) 70%, rgba(223, 186, 115, 0.5) 100%);
+      box-shadow: 
+        0 45px 90px -20px rgba(0, 0, 0, 0.95),
+        0 0 70px -10px rgba(223, 186, 115, 0.35);
+      opacity: 0;
+      transform: translateY(50px) scale(0.93);
+      transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+
+    .masterpiece-wrapper.is-revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .masterpiece-inner {
+      background: var(--card-bg);
+      backdrop-filter: blur(35px);
+      -webkit-backdrop-filter: blur(35px);
+      border-radius: 31px;
+      padding: 44px 38px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-light-beam {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle 320px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(223, 186, 115, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .top-curator-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(223, 186, 115, 0.22);
+      padding-bottom: 16px;
+      margin-bottom: 26px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .top-curator-bar .curator-badge {
+      font-family: var(--font-display);
+      font-size: 19px;
+      color: var(--gold-1);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .live-beacon {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--emerald);
+      animation: beaconPulse 2s infinite;
+    }
+
+    @keyframes beaconPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+
+    .top-curator-bar .exec-tag {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .console-ide {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.9;
+      color: var(--text-soft);
+      background: rgba(6, 8, 15, 0.75);
+      border: 1px solid rgba(223, 186, 115, 0.16);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 2;
+    }
+
+    .console-ide .c-prompt { color: var(--gold-1); }
+    .console-ide .c-var { color: var(--rose-pigment); }
+    .console-ide .c-str { color: #86efac; }
+    .console-ide .c-comment { color: #64748b; font-style: italic; }
+
+    .typing-caret {
+      display: inline-block;
+      width: 7px;
+      height: 14px;
+      background: var(--gold-1);
+      vertical-align: middle;
+      animation: blinkCaret 0.9s infinite;
+    }
+
+    @keyframes blinkCaret { 50% { opacity: 0; } }
+
+    .narrative-body {
+      display: none;
+      opacity: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .narrative-body.is-active {
+      display: block;
+      animation: revealContent 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes revealContent {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-salutation {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--gold-2);
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .narrative-text {
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: #d1d5db;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    .art-gold-emphasis {
+      color: var(--gold-2);
+      border-bottom: 1px dotted var(--gold-1);
+      font-weight: 500;
+    }
+
+    .transition-prompt {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--rose-pigment);
+      margin-bottom: 26px;
+      display: block;
+    }
+
+    .interactive-stage-card {
+      display: none;
+    }
+
+    .interactive-stage-card.is-active {
+      display: block;
+      animation: revealContent 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .sanctuary-question-box {
+      background: linear-gradient(180deg, rgba(223, 186, 115, 0.09) 0%, rgba(224, 122, 147, 0.05) 100%);
+      border: 1px solid rgba(223, 186, 115, 0.25);
+      border-radius: 24px;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 12px 35px -10px rgba(0,0,0,0.6);
+    }
+
+    .sanctuary-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 26px;
+      letter-spacing: 0.3px;
+    }
+
+    .action-arena {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      min-height: 68px;
+    }
+
+    button {
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-yes-gold {
+      background: linear-gradient(135deg, #dfba73 0%, #caa360 100%);
+      color: #0f1118;
+      box-shadow: 0 8px 25px -6px rgba(223, 186, 115, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-yes-gold:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 32px -6px rgba(223, 186, 115, 0.8);
+      color: #000000;
+    }
+
+    .btn-no-evasive {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-soft);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      transition: left 0.15s ease, top 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-no-evasive:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    .gentle-decline-link {
+      display: block;
+      margin-top: 22px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .gentle-decline-link:hover {
+      color: var(--text-soft);
+      text-decoration: underline;
+    }
+
+    .confirmation-view {
+      text-align: center;
+      padding: 28px 18px;
+    }
+
+    .confirmation-view .sparkle-icon {
+      font-size: 48px;
+      margin-bottom: 14px;
+      animation: popSparkle 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes popSparkle {
+      from { opacity: 0; transform: scale(0.3) rotate(-25deg); }
+      to { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    .confirmation-heading {
+      font-family: var(--font-display);
+      font-size: 36px;
+      color: var(--gold-2);
+      margin-bottom: 14px;
+    }
+
+    .curated-chip {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      background: rgba(223, 186, 115, 0.12);
+      border: 1px solid rgba(223, 186, 115, 0.35);
+      color: var(--gold-1);
+      padding: 8px 24px;
+      border-radius: 10px;
+      margin-bottom: 22px;
+    }
+
+    .confirmation-desc {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.75;
+    }
+
+    .confirmation-desc.sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .masterpiece-inner { padding: 32px 24px; }
+      .main-salutation { font-size: 32px; }
+      .sanctuary-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="spaceCanvas"></canvas>
+
+  <div class="aurora-layer">
+    <div class="aurora-sphere sphere-1"></div>
+    <div class="aurora-sphere sphere-2"></div>
+    <div class="aurora-sphere sphere-3"></div>
+  </div>
+  <div class="fine-canvas-grid"></div>
+
+  <div class="letter-modal" id="letterModal">
+    <div class="envelope-3d-box" id="envelope3d">
+      <div class="envelope-glow-shadow"></div>
+      <div class="envelope-hull"></div>
+      <div class="envelope-bottom-pocket"></div>
+      <div class="envelope-top-lid"></div>
+      <div class="wax-seal-ornament">
+        <span>S</span>
+      </div>
+    </div>
+    <div class="envelope-prompt-text">
+      <span>Para Sarahi • Toca para abrir</span>
+      <span>✨</span>
+    </div>
+  </div>
+
+  <div class="masterpiece-wrapper" id="masterpieceWrapper">
+    <div class="masterpiece-inner" id="masterpieceCard">
+      
+      <div class="glass-light-beam"></div>
+
+      <div class="top-curator-bar">
+        <div class="curator-badge">
+          <span class="live-beacon"></span>
+          <span>Para: Sarahi ✨</span>
+        </div>
+        <span class="exec-tag">invitacion.exe</span>
+      </div>
+
+      <div class="console-ide" id="consoleIde"></div>
+
+      <div class="narrative-body" id="narrativeBody">
+        <h1 class="main-salutation">Hola Sarahi 👋, espero te encuentres bien</h1>
+        
+        <p class="narrative-text">
+          Estudio <span class="art-gold-emphasis">Ingeniería en Ciencias de la Computación</span>, soy alguien que disfruta mucho hacer reír a las personas, me encanta aprender cosas nuevas, editar videos, programación, correr, entrenar, crear proyectos y siempre intento mejorar en todo lo que hago.
+        </p>
+
+        <span class="transition-prompt">Y si te parece bien tal vez...</span>
+
+        <div class="interactive-stage-card is-active" id="stageQuestion">
+          <div class="sanctuary-question-box">
+            <h2 class="sanctuary-title">¿Nos podríamos conocer más?</h2>
+            
+            <div class="action-arena" id="actionArena">
+              <button class="btn-yes-gold" id="btnYes">
+                <span>Sí 🙂</span>
+              </button>
+              <button class="btn-no-evasive" id="btnNo">No</button>
+            </div>
+
+            <span class="gentle-decline-link" id="btnDecline">Prefiero decir que no, gracias</span>
+          </div>
+        </div>
+
+        <div class="interactive-stage-card" id="stageAccepted">
+          <div class="confirmation-view">
+            <div class="sparkle-icon">✨</div>
+            <h2 class="confirmation-heading">¡Me parece genial!</h2>
+            <div class="curated-chip">Empecemos por platicar más</div>
+            <p class="confirmation-desc">Le acabo de avisar. Nos escribimos pronto.</p>
+            <p class="confirmation-desc sub">(Si el mensaje no se abrió solo, puedes escribirme tú directamente.)</p>
+          </div>
+        </div>
+
+        <div class="interactive-stage-card" id="stagePoliteDecline">
+          <div class="confirmation-view">
+            <h2 class="confirmation-heading" style="color: var(--text-soft);">Entendido, gracias por tu tiempo</h2>
+            <p class="confirmation-desc sub">De verdad, no hay ningún problema. Que tengas un excelente día.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const MI_WHATSAPP = "5215574320660";
+
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 120 };
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      const count = Math.floor((canvas.width * canvas.height) / 8500);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 1.5 + 0.4,
+          baseX: Math.random() * canvas.width,
+          baseY: Math.random() * canvas.height,
+          density: (Math.random() * 20) + 1,
+          alpha: Math.random() * 0.7 + 0.2,
+          speed: Math.random() * 0.008 + 0.003
+        });
+      }
+    }
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+
+    function renderStarDust() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        p.alpha += p.speed;
+        if (p.alpha > 0.9 || p.alpha < 0.2) p.speed = -p.speed;
+
+        if (mouse.x != null) {
+          let dx = mouse.x - p.x;
+          let dy = mouse.y - p.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius) {
+            let force = (mouse.radius - dist) / mouse.radius;
+            let directionX = (dx / dist) * force * p.density * 0.6;
+            let directionY = (dy / dist) * force * p.density * 0.6;
+            p.x -= directionX;
+            p.y -= directionY;
+          } else {
+            if (p.x !== p.baseX) {
+              let dx = p.x - p.baseX;
+              p.x -= dx * 0.02;
+            }
+            if (p.y !== p.baseY) {
+              let dy = p.y - p.baseY;
+              p.y -= dy * 0.02;
+            }
+          }
+        }
+
+        ctx.fillStyle = `rgba(223, 186, 115, ${Math.abs(p.alpha)})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(renderStarDust);
+    }
+    renderStarDust();
+
+    const wrapper = document.getElementById('masterpieceWrapper');
+    const card = document.getElementById('masterpieceCard');
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+
+      if (wrapper.classList.contains('is-revealed') && window.innerWidth > 768) {
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateX = ((e.clientY - centerY) / (rect.height / 2)) * -4;
+        const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 4;
+        wrapper.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      }
+    });
+
+    const letterModal = document.getElementById('letterModal');
+    const envelope3d = document.getElementById('envelope3d');
+    let hasOpened = false;
+
+    envelope3d.addEventListener('click', () => {
+      if (hasOpened) return;
+      hasOpened = true;
+
+      envelope3d.classList.add('envelope-open');
+
+      setTimeout(() => {
+        letterModal.classList.add('vanished');
+        wrapper.classList.add('is-revealed');
+        setTimeout(streamCodeLines, 450);
+      }, 750);
+    });
+
+    const codeScript = [
+      { html: '<span class="c-prompt">&gt;</span> cargando <span class="c-var">invitacion</span><span class="c-comment">.js</span> ...' },
+      { html: '<span class="c-prompt">&gt;</span> const <span class="c-var">remitente</span> = <span class="c-str">"Miguel"</span>;' },
+      { html: '<span class="c-prompt">&gt;</span> const <span class="c-var">destinatario</span> = <span class="c-str">"Sarahi"</span>;' },
+      { html: '<span class="c-prompt">&gt;</span> status: <span class="c-str">listo ✔</span>' }
+    ];
+
+    const consoleIde = document.getElementById('consoleIde');
+    let lineIdx = 0;
+
+    function streamCodeLines() {
+      if (lineIdx < codeScript.length) {
+        const row = document.createElement('div');
+        row.innerHTML = codeScript[lineIdx].html;
+        consoleIde.appendChild(row);
+        lineIdx++;
+        setTimeout(streamCodeLines, 400);
+      } else {
+        const caret = document.createElement('span');
+        caret.className = 'typing-caret';
+        consoleIde.appendChild(caret);
+        
+        setTimeout(() => {
+          document.getElementById('narrativeBody').classList.add('is-active');
+        }, 320);
+      }
+    }
+
+    const btnNo = document.getElementById('btnNo');
+    const arena = document.getElementById('actionArena');
+    let dodgeCount = 0;
+
+    function evadeCursor() {
+      dodgeCount++;
+      const arenaRect = arena.getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+
+      const maxX = Math.max(arenaRect.width - btnRect.width - 6, 10);
+      const maxY = Math.max(arenaRect.height - btnRect.height - 6, 10);
+
+      const randX = Math.random() * maxX;
+      const randY = Math.random() * maxY;
+
+      btnNo.style.position = 'absolute';
+      btnNo.style.left = `${randX}px`;
+      btnNo.style.top = `${randY}px`;
+
+      const replies = ["No", "¿Segura, Sarahi?", "Inténtalo de nuevo 😉", "Casi...", "Tan cerca", "Nop", "Otra vez no"];
+      btnNo.textContent = replies[Math.min(dodgeCount, replies.length - 1)];
+    }
+
+    btnNo.addEventListener('mouseenter', evadeCursor);
+    btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); evadeCursor(); }, { passive: false });
+    btnNo.addEventListener('click', (e) => { e.preventDefault(); evadeCursor(); });
+
+    const stageQuestion = document.getElementById('stageQuestion');
+    const stageAccepted = document.getElementById('stageAccepted');
+    const stagePoliteDecline = document.getElementById('stagePoliteDecline');
+
+    document.getElementById('btnYes').addEventListener('click', () => {
+      const waMsg = encodeURIComponent("¡Hola Miguel! Soy Sarahi, me parece buena idea que nos conozcamos más 🙂✨");
+      const waUrl = `https://wa.me/${MI_WHATSAPP}?text=${waMsg}`;
+
+      stageQuestion.classList.remove('is-active');
+      stageAccepted.classList.add('is-active');
+
+      window.open(waUrl, '_blank');
+    });
+
+    document.getElementById('btnDecline').addEventListener('click', () => {
+      stageQuestion.classList.remove('is-active');
+      stagePoliteDecline.classList.add('is-active');
+    });
+  </script>
+</body>
+</html>
